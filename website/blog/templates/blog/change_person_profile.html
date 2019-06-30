@@ -1,0 +1,54 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block css %}
+<link href="{% static 'blog/css/proson_profile3.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block title %}
+个人简介
+{% endblock %}
+
+{% block content %}
+<div class="container" style="min-height:600px;">
+     <div class="row">
+         <div class="col-md-4">
+<!--留个坑以后放点什么-->
+         </div>
+         <div class="col-md-5">
+            <form class="form-signin" method="POST" style="margin-right: 40px;" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h2 class="form-signin-heading text-center">个人简介</h2>
+                {% if message %}
+                    <div class="alert alert-danger" role="alert" style="padding: 10px">{{ message }}</div>
+                {% endif %}
+                {% for field in form %}
+                <div class="line">
+                    {% if field.errors %}
+                    <div class="alert alert-danger" role="alert" style="padding: 10px">{{ field.errors }}</div>
+                    {% endif %}
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+                {% endfor %}
+                <div class="line">
+                <strong>原头像</strong>
+                <p>
+                    {% if request.user.user.img.url%}
+                    <img class="img" src="{{ request.user.user.img.url }}" alt="图裂了" />
+                    {% else %}
+                    <img src="{{ request.session.profile_img_url }}" alt="图裂了" />
+                    {% endif %}
+                </p>
+                </div>
+
+                <p class="text-right" style="display:inline-block;float:right;"><a href="{% url 'blog:change_password'%}"><strong>修改密码</strong></a></p>
+                <button style="margin-top: 5px;" class="btn btn-lg btn-primary btn-block" type="submit">提交修改</button>
+            </form>
+         </div>
+         <div class="col-md-3">
+             {% include 'blog/right_side_bar.html' %}
+         </div>
+     </div>
+ </div>
+{% endblock %}

@@ -1,0 +1,14 @@
+.abstract-pos {
+    display: inline-block;
+    position: absolute;
+    padding: 6px 0px 0px 15px;
+}
+.img-size{
+    width:150px;
+    height:120px;
+    display:inline-block;
+}
+.blog_info{
+    float:right;
+    margin: -10px 20px 0px 0px;
+}

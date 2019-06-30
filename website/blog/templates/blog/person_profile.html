@@ -1,0 +1,47 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block css %}
+<link href="{% static 'blog/css/proson_profile3.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block title %}
+个人简介
+{% endblock %}
+
+{% block content %}
+<div class="container" style="min-height:600px;">
+     <div class="row">
+         <div class="col-md-4">
+<!--        留个坑以后放点别的-->
+         </div>
+         <div class="col-md-5">
+            <h2 class="form-signin-heading text-center">个人简介</h2>
+            {% if message %}
+            <div class="alert alert-danger" role="alert" style="padding: 10px">{{ message }}</div>
+            {% endif %}
+            <div class="line" >
+                <p class="text-left"><strong>用户名</strong></p>
+                <div class="alert alert-info" role="alert">{{ user.username }}</div>
+            </div>
+            <div class="line">
+                <p class="text-left"><strong>邮箱</strong></p>
+                <div class="alert alert-info" role="alert">{{ user.email }}</div>
+            </div>
+            <div class="line">
+                <p class="text-left"><strong>头像&nbsp;&nbsp;&nbsp;</strong>
+                {% if user.img.url%}
+                <img class="img" src="{{ request.user.user.img.url }}" alt="图裂了" />
+                {% else %}
+                <img src="{{ request.session.profile_img_url }}" alt="图裂了" />
+                {% endif %}
+                </p>
+            </div>
+             <a href="{% url 'blog:change_person_profile' %}" ><span class="label label-primary">进入修改页面</span></a>
+         </div>
+         <div class="col-md-3">
+             {% include 'blog/right_side_bar.html' %}
+         </div>
+     </div>
+ </div>
+{% endblock %}

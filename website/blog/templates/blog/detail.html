@@ -1,0 +1,192 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load comments %}
+{% block title %}
+博客内容
+{% endblock %}
+{% block css %}
+<link href="{% static 'blog/css/github.css' %}"  rel="stylesheet" >
+<link href="{% static 'blog/css/detail1.css' %}"  rel="stylesheet" >
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+<!--        博客详细内容-->
+        <div class="col-md-9">
+            <h1>{{ entry.title }}</h1>
+            <p>
+                <strong>{{ entry.author }}</strong>
+                &nbsp;&nbsp;&nbsp;&nbsp; {{ entry.created_time | date:'Y年m月d日' }}
+
+                &nbsp;&nbsp;&nbsp;&nbsp; 分类:
+                {% for category in entry.category.all %}
+                <a href="{% url 'blog:category' category.id %}" >{{ category.name }}</a>
+                {% endfor %}
+
+                &nbsp;&nbsp;&nbsp;&nbsp; 标签:
+                {% for tag in entry.tags.all %}
+                <a href="{% url 'blog:tag' tag.id %}" >{{ tag.name }}</a>
+                {% endfor %}
+
+                &nbsp;&nbsp;&nbsp;&nbsp; 阅读量:
+                {{ entry.visiting }}
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="edit-span"><a href="{% url 'blog:edit_blog' entry.id %}">编辑</a></span>
+            </p>
+            <hr/>
+            <p>{{ entry.body | safe | linebreaks }}</p>
+<!--            评论总数-->
+            <div class="row">
+                {% get_comment_count for entry as comment_count%}
+                {% get_comment_form for entry as form %}
+                <h3>评论总数:{{ comment_count }}</h3>
+            </div>
+
+<!--            评论表单-->
+            {% if request.session.login or request.user.is_authenticated %}
+            <form class="form-horizontal" action="{% comment_form_target %}" method="post" >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="input_title" class="pull-left control-label">评论标题</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" style="width:450px;" name="comment_title" id="input_title" placeholder="请输入评论的标题" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="input_comment" class="pull-left control-label">评论内容</label>
+                    <div class="col-sm-6">
+                        <textarea style="resize:none;width:650px;"  class="form-control" rows=6 name="comment" id="input_comment" placeholder="请输入评论的内容" required ></textarea>
+                    </div>
+                </div>
+                <span style="display:none;">{{ form.honeypot }}</span>
+                {{ form.content_type }}
+                {{ form.object_pk }}
+                {{ form.timestamp }}
+                {{ form.security_hash }}
+                <input type="hidden" name="next" value="{% url 'blog:detail' entry.id %}" />
+                <input type="hidden" name="parent_id" value="-1" />
+                <input type="hidden" name="level"   value="0" />
+                <div class="from-group col-sm-7">
+                    <div class="pull-left" style="margin-left:50px;margin-top:-10px;">
+                        <button type="reset" class="btn btn-default" >
+                            <span class="glyphicon glyphicon-repeat"></span>
+                            &nbsp;&nbsp;重置
+                        </button>
+                    </div>
+                    <div class="pull-right" style="margin-right:30px;margin-top:-10px;">
+                        <button type="submit" class="btn btn-success" >
+                            <span class="glyphicon glyphicon-send"></span>
+                            &nbsp;&nbsp;提交
+                        </button>
+                    </div>
+                </div>
+            </form>
+            {% else %}
+            <h3>登录后即可进行评论<a href="{% url 'blog:login' %}?next={{ request.path }}">&nbsp;&nbsp;点此登录</a></h3>
+            {% endif %}
+            <div>&nbsp;</div>
+            <hr/>
+<!--            评论显示-->
+            <div class="row">
+                {% for comment in comment_list %}
+                <div class="single_comments" style="margin-left:{{ comment.level }}em">
+                    <div class="col-md-9 comment-content" style="margin-bottom:10px">
+                        <div>
+                            {% if comment.user_img %}
+                                <img class="portrait" src="{{ comment.user_img }}"  />
+                            {% elif request.user.user.img.url %}
+                                <img class="portrait" src="{{ request.user.user.img.url }}"  />
+                            {% else %}
+                                <img class="portrait" src="{% static 'blog/images/default.png' %}"   />
+                            {% endif %}
+                        </div>
+                        <strong>&nbsp;&nbsp;{{ comment.comment_title }}</strong>
+                        <div>
+                            {% if comment.parent_comment %}
+                            &nbsp;{{ comment.user.username }}
+                            &nbsp;{{ comment.user_name }}
+                            <i class="glyphicon glyphicon-share-alt"></i>回复
+                            &nbsp;{{ comment.parent_comment.user }}
+                            &nbsp;{{ comment.parent_comment.user_name }}
+                            在&nbsp;&nbsp;
+                            {% else %}
+                            &nbsp;{{ comment.user.username }}
+                            &nbsp;{{ comment.user_name }}
+                            在&nbsp;&nbsp;
+                            {% endif %}
+                            <em>{{ comment.submit_date }}&nbsp;评论</em>
+                            {% if request.session.login or request.user.user.is_authenticated %}
+                            &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'blog:reply_comment' comment.id%}">回复</a>
+                            {% else %}
+                             <span class="alert alert-danger" style="padding:5px;"><a href="{% url 'blog:login' %}">登录即可回复</a></span>
+                            {% endif %}
+                        </div>
+                        <br/>
+                        <p>{{ comment.comment | linebreaks }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <div class="pull-right" id="pagintor">
+                <ul class="pagination pagintion-lg">
+                    {% if top_comments.has_previous %}
+                    <li><a href="?page={{ top_comments.previous_page_number }}">前一页</a></li>
+                    {% endif %}
+                    {% if page_data.first %}
+                    <li><a href="?page=1">1</a></li>
+                    {% endif %}
+                    {% if page_data.left %}
+                    <!-- ...表示省略
+                    {% if page_data.left_has_more %}
+                    <span>...</span>
+                    {% endif %}
+                    -->
+                    {% for i in page_data.left %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endfor %}
+
+                    {% endif %}
+
+                    <li class="active"><a href="?page={{ top_comments.number }}">{{ top_comments.number }}</a></li>
+
+                    {% if page_data.right %}
+
+                    {% for i in page_data.right %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endfor %}
+
+                    <!-- ...表示省略
+                    {%if page_data.right_has_more %}
+                    <span>...</span>
+                    {% endif %}
+                    -->
+
+                    {% endif %}
+
+                    {% if page_data.last %}
+                    <li><a href="?page={{ pagintor.num_pages }}">{{ pagintor.num_pages }}</a></li>
+                    {% endif %}
+
+                    {% if top_comments.has_next %}
+                    <li><a href="?page={{ top_comments.next_page_number }}">后一页</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+
+<!--        侧边目录-->
+        <div class="col-md-3">
+            <div class="row">
+                <div class="widget">
+                    <h3>目录</h3>
+                    {{ entry.toc | safe }}
+                </div>
+            </div>
+            {% include 'blog/right_side_bar.html' %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+.single_comments{
+    margin-bottom:20px;
+}
+.single_comments img {
+    float:left;
+    margin-left:0px;
+    margin-top:0px;
+}
+.single_comments p {
+    margin-bottom:0px;
+}
+.comment-content{
+    border-bottom:1px dashed #2d7da4;
+    border-left:1px dashed #2d7da4;
+}
+
+.toc ul{
+    list-style-type: none;
+}
+.portrait{
+    width:50px;height:50px;border-radius:50%;overfolw:hidden;
+}

@@ -1,0 +1,89 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}
+博客首页
+{% endblock %}
+{% block css %}
+<link href="{% static 'blog/css/index2.css' %}" rel="stylesheet >"
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            {% for entry in entries_list %}
+            <h2><a href="{% url 'blog:detail' entry.id %}">{{ entry.title }}</a></h2>
+            {% if entry.img %}
+            <img class='img-size' src="{{ entry.img.url }}" alt="'图裂了">
+            {% else %}
+            <img class='img-size' src="/media/default_blog.png" alt="图裂了" >
+            {% endif %}
+            <div class="abstract-pos" >
+                <p style="margin-right:15px;">{{ entry.body | truncatechars:164 }}......</p>
+            <p>
+                <span>作者:{{ entry.author }}</span>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;类别:{% for category in entry.category.all %}<span>&nbsp;&nbsp;<a href="{% url 'blog:category' category.id %}" class="{% cycle  'label label-primary' 'label label-danger' 'label label-warning' 'label label-success' 'label label-default'  'label label-info'%}">{{ category }}</a>{% endfor %}</span></span>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;标签:{% for tag in entry.tags.all %}<span>&nbsp;&nbsp;<a href="{% url 'blog:tag' tag.id %}" class="{% cycle 'label label-info' 'label label-success' 'label label-warning' 'label label-danger' 'label label-default' 'label label-primary'%}">{{ tag }}</a>{% endfor %}</span></span>
+            </p>
+            <p class="blog_info">
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;访问次数:{{ entry.visiting }}</span>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;创建时间:{{ entry.created_time }}</span>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;修改时间:{{ entry.modified_time }}</span>
+            </p>
+            </div>
+            <hr/>
+            {% endfor %}
+            <div class="pull-right" id="pagintor">
+                <ul class="pagination pagintion-lg">
+                    {% if entries_list.has_previous %}
+                    <li><a href="?page={{ entries_list.previous_page_number }}{% if keyword %}&keyword={{keyword}}{%endif%}">前一页</a></li>
+                    {% endif %}
+                    {% if page_data.first %}
+                    <li><a href="?page=1{% if keyword %}&keyword={{keyword}}{%endif%}">1</a></li>
+                    {% endif %}
+                    {% if page_data.left %}
+                    <!-- ...表示省略
+                    {% if page_data.left_has_more %}
+                    <span>...</span>
+                    {% endif %}
+                    -->
+                    {% for i in page_data.left %}
+                    <li><a href="?page={{ i }}{% if keyword %}&keyword={{keyword}}{%endif%}">{{ i }}</a></li>
+                    {% endfor %}
+
+                    {% endif %}
+
+                    <li class="active"><a href="?page={{ entries_list.number }}{% if keyword %}&keyword={{keyword}}{%endif%}">{{ entries_list.number }}</a></li>
+
+                    {% if page_data.right %}
+
+                    {% for i in page_data.right %}
+                    <li><a href="?page={{ i }}{% if keyword %}&keyword={{keyword}}{%endif%}">{{ i }}</a></li>
+                    {% endfor %}
+
+                    <!-- ...表示省略
+                    {%if page_data.right_has_more %}
+                    <span>...</span>
+                    {% endif %}
+                    -->
+                    {% endif %}
+
+                    {% if page_data.last %}
+                    <li><a href="?page={{ pagintor.num_pages }}{% if keyword %}&keyword={{keyword}}{%endif%}">{{ pagintor.num_pages }}</a></li>
+                    {% endif %}
+
+                    {% if entries_list.has_next %}
+                    <li><a href="?page={{ entries_list.next_page_number }}{% if keyword %}&keyword={{keyword}}{%endif%}">后一页</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            {% include 'blog/right_side_bar.html' %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

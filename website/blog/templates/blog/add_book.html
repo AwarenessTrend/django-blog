@@ -1,0 +1,48 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block css %}
+<link href="{% static 'blog/css/add_book1.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block title %}
+添加书籍
+{% endblock %}
+
+{% block content %}
+<div class="container">
+     <div class="row">
+         <div class="col-md-4">
+         </div>
+         <div class="col-md-5">
+            <form class="form-signin" method="POST" style="margin-right: 40px;">
+                {% csrf_token %}
+                <h2 class="form-signin-heading text-center">添加书籍</h2>
+                {% for field in form %}
+                <div class="line">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+                {% endfor %}
+<!--                <div class="line">-->
+<!--                    {{ form.name.label_tag }}-->
+<!--                    {{ form.name }}-->
+<!--                </div>-->
+<!--                <div class="line">-->
+<!--                    {{ form.category.label_tag }}-->
+<!--                    {{ form.category }}-->
+<!--                </div>-->
+<!--                <div class="line">-->
+<!--                    {{ form.status.label_tag }}-->
+<!--                    {{ form.status }}-->
+<!--                </div>-->
+                <a href="{% url 'blog:my_info' %}?param={{param}}" class="back">返回关于我页面</a>
+                <button style="margin-top: 5px;" class="btn btn-lg btn-primary btn-block" type="submit">添加</button>
+            </form>
+         </div>
+         <div class="col-md-3">
+             {% include 'blog/right_side_bar.html' %}
+         </div>
+     </div>
+ </div>
+{% endblock %}

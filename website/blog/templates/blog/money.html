@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block css %}
+<link href="{% static 'blog/css/money.css' %}" rel="stylesheet" >
+{% endblock %}
+
+{% block title %}
+关于我
+{% endblock %}
+
+{% block content %}
+ <div class="container">
+     <div class="row">
+         <div class="col-md-9">
+            <div class="line">
+                <img src=""
+            </div>
+         </div>
+         <div class="col-md-3">
+             {% include 'blog/right_side_bar.html' %}
+         </div>
+     </div>
+ </div> <!-- /container -->
+{% endblock %}

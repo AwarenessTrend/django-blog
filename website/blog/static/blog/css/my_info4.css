@@ -1,0 +1,31 @@
+strong {
+    font-size:20px;
+}
+
+.line {
+    width: 550px;
+}
+
+.page-header small{
+    font-size:15px;
+}
+.list-group{
+    margin-top:15px;
+}
+.add-book{
+    margin-left: 600px;
+    background-color: gold;
+}
+.edit{
+    color:white;
+}
+.edit-span{
+    float:right;
+}
+.badge{
+    margin-right:20px;
+}
+
+.project-item{
+    margin-bottom:25px;
+}

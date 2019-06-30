@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+{% block title %}邮箱注册确认{% endblock %}
+
+{% block content %}
+    <section class="container text-center" style="min-height:600px;">
+        {% if message %}
+        <h1><a href="{% url 'blog:index' %}" >{{ message }}</a></h1>
+        {% elif error %}
+        <h1><a href="{% url 'blog:register' %}">{{ error }}</a> </h1>
+        {% endif %}
+
+        {% if c_message %}
+        <h1><a href="{% url 'blog:person_profile' %}" >{{ c_message }}</a></h1>
+        {% elif c_success %}
+        <h1><a href="{% url 'blog:logout' %}" >{{ c_success }}</a></h1>
+        {% endif %}
+    </section>
+{% endblock %}

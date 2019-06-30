@@ -1,0 +1,52 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block css %}
+<link href="{% static 'blog/css/my_info4.css' %}" rel="stylesheet" >
+{% endblock %}
+
+{% block title %}
+关于我
+{% endblock %}
+
+{% block content %}
+ <div class="container">
+     <div class="row">
+         <div class="col-md-9">
+             <div class="page-header">
+              <h1>{{ category }}<small>&nbsp;&nbsp;相关</small></h1>
+            </div>
+            <div class="line">
+                <strong><i class="glyphicon glyphicon-book"></i>我读过的书:</strong>
+                <ul class="list-group">
+                    {% for book in books %}
+                      <li class="list-group-item">
+                        <span class="label label-danger edit-span"><a href="{% url 'blog:edit_book' book.id %}?param={{ param }}" class="edit">编辑</a></span>
+                        <span class="badge">{{ book.get_status_display }}</span>
+                        《{{ book }} 》
+                      </li>
+                    {% endfor %}
+                </ul>
+                <button type="button" class="btn btn-default add-book"><a href="{% url 'blog:add_book' %}?param={{ param }}">添加书籍</a></button>
+            </div>
+             <hr/>
+            <div class="line">
+                 <strong><i class="glyphicon glyphicon-road"></i>我做过的东西:</strong>
+                {% for project in projects %}
+                <div class="list-group project-item">
+                  <a href="{% url 'blog:show_project' project.id %}?param={{ param }}" class="list-group-item ">
+                    <h4 class="list-group-item-heading">{{ project.name }}</h4>
+                    <p class="list-group-item-text">{{ project.summary | truncatechars:130 }}</p>
+                  </a>
+                    <span class="label label-danger edit-span"><a href="{% url 'blog:edit_project' project.id %}?param={{ param }}" class="edit">编辑</a></span>
+                </div>
+                {% endfor %}
+                <button type="button" class="btn btn-default add-book"><a href="{% url 'blog:add_project' %}?param={{ param }}">添加项目</a></button>
+            </div>
+         </div>
+         <div class="col-md-3">
+             {% include 'blog/right_side_bar.html' %}
+         </div>
+     </div>
+ </div> <!-- /container -->
+{% endblock %}

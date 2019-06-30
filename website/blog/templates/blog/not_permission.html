@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}
+禁止
+{% endblock %}
+
+{% block content %}
+<div class="container">
+     <div class="row">
+         <div class="col-md-9 text-center">
+             <h1>您还不能这么做。</h1>
+         </div>
+
+         <div class="col-md-3">
+             {% include 'blog/right_side_bar.html' %}
+         </div>
+     </div>
+ </div>
+{% endblock %}

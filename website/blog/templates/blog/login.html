@@ -1,0 +1,51 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block css %}
+<link href="{% static 'blog/css/loginANDregister.css' %}" rel="stylesheet" >
+{% endblock %}
+
+{% block title %}
+登录
+{% endblock %}
+
+{% block content %}
+ <div class="container" style="min-height:600px;">
+     <div class="row">
+         <div class="col-md-4">
+<!--             占个位子以后放点东西什么的-->
+         </div>
+         <div class="col-md-5">
+            <form class="form-signin" method="POST"  style="margin-right: 40px;">
+                {% csrf_token %}
+                <h2 class="form-signin-heading text-center">登录</h2>
+                {% if message %}
+                <div class="alert alert-danger" role="alert" style="padding: 10px">{{ message }}</div>
+                {% endif %}
+                {% for field in form %}
+                <div class="line" >
+                    {% if field.errors %}
+                    <div class="alert alert-danger" role="alert" style="padding: 10px">{{ field.errors }}</div>
+                    {% endif %}
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+                {% endfor %}
+                <button style="margin-top: 5px;" class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+
+                    <a class="btn btn-default " href="#" >QQ账号登录(暂未开通)</a>
+
+
+                    <a class="btn btn-default" href="{% url 'blog:register' %}" style="float: right;">没账号？点我注册一个！</a>
+
+
+            </form>
+
+
+         </div>
+         <div class="col-md-3">
+             {% include 'blog/right_side_bar.html' %}
+         </div>
+     </div>
+ </div> <!-- /container -->
+{% endblock %}

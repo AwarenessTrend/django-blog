@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block css %}
+<link href="{% static 'blog/css/edit_project.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block title %}
+修改项目
+{% endblock %}
+
+{% block content %}
+<div class="container">
+     <div class="row">
+         <div class="col-md-1">
+         </div>
+         <div class="col-md-8">
+            <h2 class="form-signin-heading text-center">项目描述</h2>
+            <strong>项目名称</strong>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ project.name }}
+                </div>
+            </div>
+            <strong>项目描述</strong>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                {{ project.summary | linebreaks }}
+                </div>
+            </div>
+            <a href="{% url 'blog:my_info' %}?param={{param}}" class="back">返回关于我页面</a>
+            <button style="margin-top: 5px;" class="btn btn-lg btn-primary btn-block" type="submit">修改</button>
+         </div>
+         <div class="col-md-3">
+             {% include 'blog/right_side_bar.html' %}
+         </div>
+     </div>
+ </div>
+{% endblock %}

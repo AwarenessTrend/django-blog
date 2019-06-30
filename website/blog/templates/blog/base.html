@@ -1,0 +1,123 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>{% block title %}基础模板{% endblock %} </title>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'blog/css/base4.css' %}" rel="stylesheet">
+<!--      网站logo-->
+    <link rel="icon shortcut bookmark" type="image/png" href="{% static 'blog/images/logo.png' %} ">
+    {% block css %}
+    {% endblock %}
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  <!-- 导航条  -->
+  <nav class="navbar navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"><img src="{% static 'blog/images/logo.png' %}"><span class="navbar-text">主站</span></a>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="my-nav">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/blog/">博客首页</a></li>
+
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle  btn-lg my_info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            关于我 <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="{% url 'blog:my_info' %}?param=python">python</a></li>
+            <li><a href="{% url 'blog:my_info' %}?param=java">java</a></li>
+            <li><a href="{% url 'blog:my_info' %}?param=前端">前端</a></li>
+            <li><a href="{% url 'blog:my_info' %}?param=网络">网络</a></li>
+            <li><a href="{% url 'blog:my_info' %}?param=数据库">数据库</a></li>
+            <li><a href="{% url 'blog:my_info' %}?param=数据结构与算法">数据结构与算法</a></li>
+            <li><a href="{% url 'blog:my_info' %}?param=其他">其他</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{% url 'blog:my_info' %}?param=money">打赏</a></li>
+          </ul>
+        </div>
+
+
+      </ul>
+      <form class="navbar-form navbar-left" action="{%url 'blog:search' %}"  method="get">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="搜索博客" name="keyword">
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+          {% if request.user.is_authenticated or request.session.login %}
+          <li class="navbar-text hello" ><img class="portrait" src="{{ request.user.user.img.url }}" alt="图裂了"/>你好 {{ request.session.screen_name }}{{ request.user.username }}</li>
+          <li>
+              <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle  btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    更多 <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'blog:person_profile' %}">个人简介</a></li>
+                    <li><a href="{% url 'blog:add_blog' %}">增加博客</a></li>
+                    <li><a href="{% url 'blog:add_tag' %}">增加标签</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{% url 'blog:logout' %}">注销</a></li>
+                  </ul>
+                </div>
+          </li>
+          {% else %}
+          <li><a href="{% url 'blog:login' %}?next={{ request.path }}"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;登录&nbsp;&nbsp;</a></li>
+          {% endif %}
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+    {% block content %}
+    {% endblock %}
+    <div id="back-to-top">
+        <i class="glyphicon glyphicon-arrow-up"></i>
+    </div>
+  <footer>
+    <div class="footer" role="navigation">
+        <div class="container">
+            <div class="navbar-text">
+                <ul class="footer-text">
+                    <li><a href="/blog/">主页</a></li>
+                    <li><a href="#" target="_blank">联系我们</a></li>
+                    <li><a href="#">不知道填点啥</a></li>
+                    <li><a href="#" target="_blank">凑个位子</a></li>
+                    <li><a href="#">文档</a></li>
+                    <!--2019-04-12 16:03:30 +0000-->
+                </ul>
+                <p>Copyright © 2019  小残的博客</p>
+            </div>
+        </div>
+    </div>
+</footer>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="{% static 'jquery-3.2.1.min.js' %}"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+  ` <script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+    <!--点击back-to-top图标后返回页面顶部脚本 -->
+    <script>
+        $("#back-to-top").click(function () {
+            window.scrollTo(0,0);
+        });
+    </script>
+    {% block script %}
+    {% endblock %}
+  </body>
+</html>

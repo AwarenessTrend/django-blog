@@ -13,8 +13,8 @@ class LatestEntryFeed(Feed):
     def item_title(self,item):
         return item.title
 
-    def item_description(self, item):
-        return item.abstract
+    # def item_description(self, item):
+    #     return item.body[:10]
 
     #def item_link(self, item):
      #   return reverse('xxx',args=item.pk)

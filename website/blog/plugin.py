@@ -132,7 +132,7 @@ def send_email(email,code,username,change_password=False):
         text_message = r'{},欢迎注册博客账号,链接有效期为{}天,点击以下链接将成功注册并进入博客首页http://{}/blog/email_confirm/?code={}'.format(
             username,
             settings.CONFIRM_DAYS,
-            '169.254.221.23',
+            '25554k861j.qicp.vip:25371',
             code,
         )
         html_message = r'''
@@ -140,7 +140,7 @@ def send_email(email,code,username,change_password=False):
         <a href="http://{}/blog/email_confirm/?code={}">点我完成注册并进入博客首页</a>
         <p>有效期为{}天</p>
         <p>感谢支持</p>
-        '''.format(username,'169.254.221.23:8000',code,settings.CONFIRM_DAYS)
+        '''.format(username,'25554k861j.qicp.vip:25371',code,settings.CONFIRM_DAYS)
     else:
         #改密码时发送的信息
         # 主题
@@ -149,7 +149,7 @@ def send_email(email,code,username,change_password=False):
         text_message = r'{},该链接有效期为{}天,点击以下链接成功修改密码,并退出登录,请重新登录,确认修改http://{}/blog/email_confirm/?change={}'.format(
             username,
             settings.CONFIRM_DAYS,
-            '169.254.221.23:8000',
+            '25554k861j.qicp.vip:25371',
             code,
         )
         html_message = r'''
@@ -157,7 +157,7 @@ def send_email(email,code,username,change_password=False):
                 <a href="http://{}/blog/email_confirm/?change={}">点我完成修改并退出登录,请重新登录确认修改</a>
                 <p>有效期为{}天</p>
                 <p>感谢支持ww博客</p>
-                '''.format(username, '169.254.221.23:8000', code, settings.CONFIRM_DAYS)
+                '''.format(username, '25554k861j.qicp.vip:25371', code, settings.CONFIRM_DAYS)
     #发送方邮箱即EMAIL_HOST_USER
     sender = settings.EMAIL_HOST_USER
     #接收方邮箱

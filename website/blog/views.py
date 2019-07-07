@@ -89,8 +89,7 @@ def search(request):
     #根据关键词进行博客过滤
     entries_list = models.Entry.objects.filter(
         Q(title__icontains=keyword)|
-        Q(body__icontains=keyword)|
-        Q(abstract__icontains=keyword)
+        Q(body__icontains=keyword)
     )
     #分页 一样的套路
     page = request.GET.get('page',1)
